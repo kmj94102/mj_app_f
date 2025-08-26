@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:mj_app_f/custom/custom_bottom_navigation.dart';
-import 'package:mj_app_f/util/constants.dart';
+import 'package:mj_app_f/style/color.dart';
+import 'package:mj_app_f/views/account_book/account_book.dart';
+import 'package:mj_app_f/views/home/home.dart';
 
-void main() {
+import 'controller/home_controller.dart';
+
+void main() async {
+  Get.lazyPut(() => HomeController());
+
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -38,11 +43,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
   // 각 탭에서 보여줄 화면
   final List<Widget> _pages = [
-    const Center(child: Text('홈 화면')),
-    const Center(child: Text('게임 화면')),
-    const Center(child: Text('켈린더')),
-    const Center(child: Text('가계부')),
-    const Center(child: Text('기타')),
+    const HomeScreen(),
+    const Center(child: Text('게임 화면', style: TextStyle(color: ColorStyle.white),)),
+    const Center(child: Text('켈린더', style: TextStyle(color: ColorStyle.white),)),
+    const AccountBookScreen(),
+    const Center(child: Text('기타', style: TextStyle(color: ColorStyle.white),)),
   ];
 
   void _onItemTapped(int index) {
@@ -54,7 +59,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Bottom Navigation")),
+      backgroundColor: ColorStyle.black,
       body: _pages[_selectedIndex],
       bottomNavigationBar: buildBottomNavigation(
         context: context,
