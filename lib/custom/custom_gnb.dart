@@ -16,7 +16,7 @@ class CustomGnb extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 24, vertical: 11),
+      padding: EdgeInsets.symmetric(vertical: 11),
       child: SizedBox(
         width: double.infinity,
         height: 56,
@@ -37,10 +37,10 @@ class CustomGnb extends StatelessWidget {
                 style: TextStyle(
                   color: ColorStyle.white,
                   fontSize: 30,
-                  fontWeight: FontWeight.bold
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),

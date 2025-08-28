@@ -7,4 +7,5 @@ class ColorStyle {
   static const Color white = Color(0xFFFAFAFA);
   static const Color darkBlue = Color(0xFF0075FF);
   static const Color red = Color(0xFFFD3D28);
+  static const Color pink = Color(0xFFFFAAA7);
 }

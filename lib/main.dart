@@ -1,16 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mj_app_f/controller/game_controller.dart';
+import 'package:mj_app_f/controller/pokemon_dex_controller.dart';
+import 'package:mj_app_f/controller/pokemon_search_controller.dart';
 import 'package:mj_app_f/custom/custom_bottom_navigation.dart';
 import 'package:mj_app_f/style/color.dart';
 import 'package:mj_app_f/views/account_book/account_book.dart';
+import 'package:mj_app_f/views/game/game.dart';
 import 'package:mj_app_f/views/home/home.dart';
 
 import 'controller/home_controller.dart';
 
 void main() async {
   Get.lazyPut(() => HomeController());
+  Get.lazyPut(() => GameController());
+  Get.lazyPut(() => PokemonDexController());
+  Get.lazyPut(() => PokemonSearchController());
 
-  runApp(const MyApp());
+  runApp(GetMaterialApp(home: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -44,7 +51,7 @@ class _MyHomePageState extends State<MyHomePage> {
   // 각 탭에서 보여줄 화면
   final List<Widget> _pages = [
     const HomeScreen(),
-    const Center(child: Text('게임 화면', style: TextStyle(color: ColorStyle.white),)),
+    const GameScreen(),
     const Center(child: Text('켈린더', style: TextStyle(color: ColorStyle.white),)),
     const AccountBookScreen(),
     const Center(child: Text('기타', style: TextStyle(color: ColorStyle.white),)),
