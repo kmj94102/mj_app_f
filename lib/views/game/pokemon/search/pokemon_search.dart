@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:mj_app_f/controller/pokemon_search_controller.dart';
+import 'package:mj_app_f/custom/custom_button.dart';
 import 'package:mj_app_f/custom/custom_gnb.dart';
 import 'package:mj_app_f/custom/select_chip.dart';
 import 'package:mj_app_f/style/color.dart';
@@ -35,8 +36,11 @@ class _PokemonSearchScreenState extends State<PokemonSearchScreen> {
                 children: [
                   CustomGnb(
                     title: '포케몬 검색',
-                    startWidget: SvgPicture.asset(
-                      '${Constants.imageAddress}/ic_back.svg',
+                    startWidget: GestureDetector(
+                      onTap: (){ Get.back(); },
+                      child: SvgPicture.asset(
+                        '${Constants.imageAddress}/ic_back.svg',
+                      ),
                     ),
                   ),
                   TextField(
@@ -147,23 +151,51 @@ class _PokemonSearchScreenState extends State<PokemonSearchScreen> {
                             spacing: 10.0,
                             runSpacing: 10.0,
                             children: List.generate(
-                              PokemonSearchController.instance.generationList.length,
-                                  (index) => SelectChip(
+                              PokemonSearchController
+                                  .instance
+                                  .generationList
+                                  .length,
+                              (index) => SelectChip(
                                 text:
-                                PokemonSearchController
-                                    .instance
-                                    .generationList[index]
-                                    .text,
+                                    PokemonSearchController
+                                        .instance
+                                        .generationList[index]
+                                        .text,
                                 isSelect:
-                                PokemonSearchController
-                                    .instance
-                                    .generationList[index]
-                                    .isSelect,
+                                    PokemonSearchController
+                                        .instance
+                                        .generationList[index]
+                                        .isSelect,
                               ),
                             ),
                           ),
                         ],
                       ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 20),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: CustomButton(
+                            text: '초기화',
+                            onTap: () {},
+                            backgroundColor: Color(0xFF8B8B8B),
+                            borderColor: ColorStyle.white,
+                          ),
+                        ),
+                        SizedBox(width: 10,),
+
+                        Expanded(
+                          child: CustomButton(
+                            text: '검색',
+                            onTap: () {},
+                            backgroundColor: ColorStyle.pink,
+                            borderColor: ColorStyle.white,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],

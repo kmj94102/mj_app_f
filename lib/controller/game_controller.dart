@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:mj_app_f/util/constants.dart';
+import 'package:mj_app_f/views/game/pokemon/counter/pokemon_counter.dart';
 
 import '../views/game/pokemon/dex/pokemon_dex.dart';
 
@@ -24,6 +25,9 @@ class GameController extends GetxController {
         title: '포켓몬 카운터',
         subtitle: '포켓몬',
         imageUrl: '${Constants.imageAddress}/img_game_banner02.png',
+        onTap: () {
+          Get.to(() => const PokemonCounterScreen());
+        }
       ),
       GameItem(
         title: '커뮤 스케줄 & 퀘스트',
