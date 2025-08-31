@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:mj_app_f/util/constants.dart';
 import 'package:mj_app_f/views/game/pokemon/counter/pokemon_counter.dart';
 
+import '../views/game/persona3/persona3_schedule.dart';
 import '../views/game/pokemon/dex/pokemon_dex.dart';
 
 class GameController extends GetxController {
@@ -32,6 +33,9 @@ class GameController extends GetxController {
       GameItem(
         title: '커뮤 스케줄 & 퀘스트',
         subtitle: '페르소나3',
+        onTap: (){
+          Get.to(() => Persona3ScheduleScreen());
+        },
         imageUrl: '${Constants.imageAddress}/img_game_banner03.png',
       ),
     ];
