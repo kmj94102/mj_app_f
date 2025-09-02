@@ -10,14 +10,21 @@ import 'package:mj_app_f/views/game/game.dart';
 import 'package:mj_app_f/views/home/home.dart';
 
 import 'controller/home_controller.dart';
+import 'controller/pokemon_detail_controller.dart';
 
 void main() async {
   Get.lazyPut(() => HomeController());
   Get.lazyPut(() => GameController());
   Get.lazyPut(() => PokemonDexController());
   Get.lazyPut(() => PokemonSearchController());
+  Get.lazyPut(() => PokemonDetailController());
 
-  runApp(GetMaterialApp(home: const MyApp()));
+  runApp(
+    GetMaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: const MyApp()
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -52,9 +59,9 @@ class _MyHomePageState extends State<MyHomePage> {
   final List<Widget> _pages = [
     const HomeScreen(),
     const GameScreen(),
-    const Center(child: Text('켈린더', style: TextStyle(color: ColorStyle.white),)),
+    const Center(child: Text('켈린더', style: TextStyle(color: ColorStyle.white))),
     const AccountBookScreen(),
-    const Center(child: Text('기타', style: TextStyle(color: ColorStyle.white),)),
+    const Center(child: Text('기타', style: TextStyle(color: ColorStyle.white))),
   ];
 
   void _onItemTapped(int index) {

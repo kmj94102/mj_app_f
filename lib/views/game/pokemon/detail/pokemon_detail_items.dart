@@ -1,15 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../../../../model/pokemon.dart';
 import '../../../../style/color.dart';
 import '../../../../util/constants.dart';
 
-Widget buildPokemonEvolution() {
+Widget buildPokemonEvolution(EvolutionInfo evolution, bool isShiny) {
   return Row(
     crossAxisAlignment: CrossAxisAlignment.center,
     children: [
-      Image.network(
-        'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/4.png',
+      FadeInImage.assetNetwork(
+        placeholder: '${Constants.imageAddress}/img_egg.png',
+        image: (isShiny ? evolution.beforeShinyDot : evolution.beforeDot) ?? '',
         width: 70,
         height: 70,
       ),
@@ -18,19 +20,27 @@ Widget buildPokemonEvolution() {
       SvgPicture.asset('${Constants.imageAddress}/ic_next.svg'),
       SizedBox(width: 15),
 
-      Image.network(
-        'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/5.png',
+      FadeInImage.assetNetwork(
+        placeholder: '${Constants.imageAddress}/img_egg.png',
+        image: (isShiny ? evolution.afterShinyDot : evolution.afterDot) ?? '',
         width: 70,
         height: 70,
       ),
       SizedBox(width: 15),
 
-      Text('Lv.16', style: TextStyle(color: ColorStyle.white, fontSize: 16)),
+      Expanded(
+        child: Text(
+          evolution.evolutionCondition ?? '',
+          style: TextStyle(color: ColorStyle.white, fontSize: 16),
+        ),
+      ),
     ],
   );
 }
 
-Widget buildPokemonStatus() {
+Widget buildPokemonStatus(String statuses) {
+  List<String> statusList = statuses.split(',');
+
   return Container(
     decoration: BoxDecoration(
       color: ColorStyle.white.withAlpha(30),
@@ -90,7 +100,7 @@ Widget buildPokemonStatus() {
             children: [
               Expanded(
                 child: Text(
-                  '39',
+                  statusList.elementAtOrNull(0) ?? '0',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: ColorStyle.white,
@@ -101,7 +111,7 @@ Widget buildPokemonStatus() {
               ),
               Expanded(
                 child: Text(
-                  '52',
+                  statusList.elementAtOrNull(1) ?? '0',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: ColorStyle.white,
@@ -112,7 +122,7 @@ Widget buildPokemonStatus() {
               ),
               Expanded(
                 child: Text(
-                  '43',
+                  statusList.elementAtOrNull(2) ?? '0',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: ColorStyle.white,
@@ -123,7 +133,7 @@ Widget buildPokemonStatus() {
               ),
               Expanded(
                 child: Text(
-                  '60',
+                  statusList.elementAtOrNull(3) ?? '0',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: ColorStyle.white,
@@ -134,7 +144,7 @@ Widget buildPokemonStatus() {
               ),
               Expanded(
                 child: Text(
-                  '50',
+                  statusList.elementAtOrNull(4) ?? '0',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: ColorStyle.white,
@@ -145,7 +155,7 @@ Widget buildPokemonStatus() {
               ),
               Expanded(
                 child: Text(
-                  '65',
+                  statusList.elementAtOrNull(5) ?? '0',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: ColorStyle.white,
@@ -162,70 +172,51 @@ Widget buildPokemonStatus() {
   );
 }
 
-Widget buildPokemonWeakInfo() {
-  return Container(
-    width: double.infinity,
-    decoration: BoxDecoration(
-      color: ColorStyle.white.withAlpha(30),
-      borderRadius: BorderRadius.circular(8),
-    ),
-    child: Padding(
-      padding: const EdgeInsets.only(top: 10, bottom: 15, left: 15, right: 15),
-      child: Column(
-        children: [
-          Text(
-            '효과가 좋다',
-            style: TextStyle(color: ColorStyle.white, fontSize: 14),
-          ),
-          SizedBox(height: 10),
+Widget buildPokemonWeakInfo(PokemonEffectGrouping group) {
+  return Column(
+    children: [
+      if(group.superEffective.isNotEmpty)
+        buildPokemonWeakItem('효과가 좋다', group.superEffective),
 
-          Wrap(
-            spacing: 10,
-            runSpacing: 10,
-            children: [
-              Image.asset(
-                '${Constants.imageAddress}/img_type_fire.png',
-                width: 50,
-                height: 50,
-              ),
-              Image.asset(
-                '${Constants.imageAddress}/img_type_fire.png',
-                width: 50,
-                height: 50,
-              ),
-              Image.asset(
-                '${Constants.imageAddress}/img_type_fire.png',
-                width: 50,
-                height: 50,
-              ),
-              Image.asset(
-                '${Constants.imageAddress}/img_type_fire.png',
-                width: 50,
-                height: 50,
-              ),
-              Image.asset(
-                '${Constants.imageAddress}/img_type_fire.png',
-                width: 50,
-                height: 50,
-              ),
-              Image.asset(
-                '${Constants.imageAddress}/img_type_fire.png',
-                width: 50,
-                height: 50,
-              ),
-              Image.asset(
-                '${Constants.imageAddress}/img_type_fire.png',
-                width: 50,
-                height: 50,
-              ),
-              Image.asset(
-                '${Constants.imageAddress}/img_type_fire.png',
-                width: 50,
-                height: 50,
-              ),
-            ],
-          ),
-        ],
+      if(group.normal.isNotEmpty)
+        buildPokemonWeakItem('보통', group.normal),
+
+      if(group.notEffective.isNotEmpty)
+        buildPokemonWeakItem('효과가 별로다', group.notEffective),
+
+      if(group.noEffect.isNotEmpty)
+        buildPokemonWeakItem('효과가 없다', group.noEffect),
+    ],
+  );
+}
+
+Widget buildPokemonWeakItem(String title, List<PokemonType> items) {
+  return Padding(
+    padding: const EdgeInsets.only(bottom: 15),
+    child: Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: ColorStyle.white.withAlpha(30),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.only(top: 10, bottom: 15, left: 15, right: 15),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(title, style: TextStyle(color: ColorStyle.white, fontSize: 14)),
+            SizedBox(height: 10),
+
+            Wrap(
+              spacing: 10,
+              runSpacing: 10,
+              children: [
+                for (var item in items)
+                  Image.asset(item.image, width: 50, height: 50),
+              ],
+            ),
+          ],
+        ),
       ),
     ),
   );

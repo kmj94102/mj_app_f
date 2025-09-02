@@ -16,6 +16,8 @@ class PokemonSearchScreen extends StatefulWidget {
 }
 
 class _PokemonSearchScreenState extends State<PokemonSearchScreen> {
+  final TextEditingController _searchController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Obx(
@@ -37,7 +39,9 @@ class _PokemonSearchScreenState extends State<PokemonSearchScreen> {
                   CustomGnb(
                     title: '포케몬 검색',
                     startWidget: GestureDetector(
-                      onTap: (){ Get.back(); },
+                      onTap: () {
+                        Get.back();
+                      },
                       child: SvgPicture.asset(
                         '${Constants.imageAddress}/ic_back.svg',
                       ),
@@ -81,6 +85,7 @@ class _PokemonSearchScreenState extends State<PokemonSearchScreen> {
                         fontSize: 14,
                       ),
                     ),
+                    controller: _searchController,
                     style: TextStyle(color: ColorStyle.white, fontSize: 14),
                   ),
                   Expanded(
@@ -100,10 +105,32 @@ class _PokemonSearchScreenState extends State<PokemonSearchScreen> {
 
                           Row(
                             children: [
-                              SelectChip(text: '전체', isSelect: true),
+                              GestureDetector(
+                                onTap: () {
+                                  PokemonSearchController.instance.updateIsAll(
+                                    true,
+                                  );
+                                },
+                                child: SelectChip(
+                                  text: '전체',
+                                  isSelect:
+                                      PokemonSearchController.instance.isAll,
+                                ),
+                              ),
                               SizedBox(width: 10),
 
-                              SelectChip(text: '안 잡은 포켓몬 만', isSelect: false),
+                              GestureDetector(
+                                onTap: () {
+                                  PokemonSearchController.instance.updateIsAll(
+                                    false,
+                                  );
+                                },
+                                child: SelectChip(
+                                  text: '안 잡은 포켓몬 만',
+                                  isSelect:
+                                      !PokemonSearchController.instance.isAll,
+                                ),
+                              ),
                             ],
                           ),
                           SizedBox(height: 30),
@@ -122,17 +149,23 @@ class _PokemonSearchScreenState extends State<PokemonSearchScreen> {
                             runSpacing: 10.0,
                             children: List.generate(
                               PokemonSearchController.instance.typeList.length,
-                              (index) => SelectChip(
-                                text:
-                                    PokemonSearchController
-                                        .instance
-                                        .typeList[index]
-                                        .text,
-                                isSelect:
-                                    PokemonSearchController
-                                        .instance
-                                        .typeList[index]
-                                        .isSelect,
+                              (index) => GestureDetector(
+                                onTap: () {
+                                  PokemonSearchController.instance
+                                      .updateSelectType(index);
+                                },
+                                child: SelectChip(
+                                  text:
+                                      PokemonSearchController
+                                          .instance
+                                          .typeList[index]
+                                          .koreanName,
+                                  isSelect:
+                                      PokemonSearchController
+                                          .instance
+                                          .typeList[index]
+                                          .isSelect,
+                                ),
                               ),
                             ),
                           ),
@@ -155,17 +188,23 @@ class _PokemonSearchScreenState extends State<PokemonSearchScreen> {
                                   .instance
                                   .generationList
                                   .length,
-                              (index) => SelectChip(
-                                text:
-                                    PokemonSearchController
-                                        .instance
-                                        .generationList[index]
-                                        .text,
-                                isSelect:
-                                    PokemonSearchController
-                                        .instance
-                                        .generationList[index]
-                                        .isSelect,
+                              (index) => GestureDetector(
+                                onTap: () {
+                                  PokemonSearchController.instance
+                                      .updateSelectGeneration(index);
+                                },
+                                child: SelectChip(
+                                  text:
+                                      PokemonSearchController
+                                          .instance
+                                          .generationList[index]
+                                          .koreanName,
+                                  isSelect:
+                                      PokemonSearchController
+                                          .instance
+                                          .generationList[index]
+                                          .isSelect,
+                                ),
                               ),
                             ),
                           ),
@@ -180,17 +219,23 @@ class _PokemonSearchScreenState extends State<PokemonSearchScreen> {
                         Expanded(
                           child: CustomButton(
                             text: '초기화',
-                            onTap: () {},
+                            onTap: () {
+                              PokemonSearchController.instance.clear();
+                            },
                             backgroundColor: Color(0xFF8B8B8B),
                             borderColor: ColorStyle.white,
                           ),
                         ),
-                        SizedBox(width: 10,),
+                        SizedBox(width: 10),
 
                         Expanded(
                           child: CustomButton(
                             text: '검색',
-                            onTap: () {},
+                            onTap: () {
+                              PokemonSearchController.instance.onSearch(
+                                _searchController.text,
+                              );
+                            },
                             backgroundColor: ColorStyle.pink,
                             borderColor: ColorStyle.white,
                           ),

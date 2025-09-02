@@ -1,32 +1,29 @@
 import 'package:flutter/cupertino.dart';
+import 'package:mj_app_f/model/pokemon.dart';
 import 'package:mj_app_f/style/color.dart';
 
 class PokemonTypeChip extends StatelessWidget {
-  final String text;
-  final String imageUrl;
-  final Color backgroundColor;
+  final PokemonType type;
 
   const PokemonTypeChip({
     super.key,
-    required this.text,
-    required this.imageUrl,
-    required this.backgroundColor,
+    required this.type,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: backgroundColor,
+        color: type.color,
         borderRadius: BorderRadius.circular(30),
       ),
       child: Padding(
         padding: EdgeInsets.symmetric(vertical: 5, horizontal: 12),
         child: Row(
           children: [
-            Image.asset(imageUrl, width: 20, height: 20),
+            Image.asset(type.image, width: 20, height: 20),
             SizedBox(width: 4),
-            Text(text, style: TextStyle(color: ColorStyle.white, fontSize: 14)),
+            Text(type.koreanName, style: TextStyle(color: ColorStyle.white, fontSize: 14)),
           ],
         ),
       ),

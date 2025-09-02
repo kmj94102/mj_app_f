@@ -1,58 +1,108 @@
 import 'package:get/get.dart';
+import 'package:mj_app_f/model/pokemon.dart';
 
-class PokemonSearchController extends GetxController{
+class PokemonSearchController extends GetxController {
   static PokemonSearchController instance = Get.find();
 
-  final _typeList = <TempSelectItem>[].obs;
-  List<TempSelectItem> get typeList => _typeList;
+  final _typeList = <PokemonType>[].obs;
 
-  final _generationList = <TempSelectItem>[].obs;
-  List<TempSelectItem> get generationList => _generationList;
+  List<PokemonType> get typeList => _typeList;
+
+  final _generationList = <PokemonGeneration>[].obs;
+
+  List<PokemonGeneration> get generationList => _generationList;
+
+  final _isAll = true.obs;
+
+  bool get isAll => _isAll.value;
 
   @override
   void onInit() {
     super.onInit();
 
-    _typeList.value = [
-      TempSelectItem(text: '전체', isSelect: true),
-      TempSelectItem(text: '노말', isSelect: false),
-      TempSelectItem(text: '불꽃', isSelect: false),
-      TempSelectItem(text: '물', isSelect: false),
-      TempSelectItem(text: '풀', isSelect: false),
-      TempSelectItem(text: '전기', isSelect: false),
-      TempSelectItem(text: '얼음', isSelect: false),
-      TempSelectItem(text: '격투', isSelect: false),
-      TempSelectItem(text: '땅', isSelect: false),
-      TempSelectItem(text: '독', isSelect: false),
-      TempSelectItem(text: '비행', isSelect: false),
-      TempSelectItem(text: '바위', isSelect: false),
-      TempSelectItem(text: '에스퍼', isSelect: false),
-      TempSelectItem(text: '벌레', isSelect: false),
-      TempSelectItem(text: '고스트', isSelect: false),
-      TempSelectItem(text: '드래곤', isSelect: false),
-      TempSelectItem(text: '강철', isSelect: false),
-      TempSelectItem(text: '악', isSelect: false),
-      TempSelectItem(text: '페어리', isSelect: false),
-    ];
-
-    _generationList.value = [
-      TempSelectItem(text: '전체', isSelect: true),
-      TempSelectItem(text: '1세대', isSelect: false),
-      TempSelectItem(text: '2세대', isSelect: false),
-      TempSelectItem(text: '3세대', isSelect: false),
-      TempSelectItem(text: '4세대', isSelect: false),
-      TempSelectItem(text: '5세대', isSelect: false),
-      TempSelectItem(text: '6세대', isSelect: false),
-      TempSelectItem(text: '7세대', isSelect: false),
-      TempSelectItem(text: '8세대', isSelect: false),
-      TempSelectItem(text: '9세대', isSelect: false),
-    ];
+    _typeList.value = getPokemonTypes();
+    _generationList.value = getPokemonGeneration();
   }
-}
 
-class TempSelectItem {
-  final String text;
-  final bool isSelect;
+  void updateIsAll(bool value) {
+    _isAll.value = value;
+  }
 
-  TempSelectItem({required this.text, required this.isSelect});
+  void updateSelectType(int index) {
+    if (index == 0) {
+      for (var i = 0; i < _typeList.length; i++) {
+        _typeList[i].isSelect = (i == 0);
+      }
+    } else {
+      _typeList[index].isSelect = !_typeList[index].isSelect;
+
+      var selectedCount = _typeList.where((t) => t.isSelect).length;
+      if (selectedCount > 2) {
+        _typeList[index].isSelect = false;
+        Get.showSnackbar(
+          GetSnackBar(
+            message: '최대 2개까지 선택 가능합니다.',
+            duration: const Duration(seconds: 1),
+          ),
+        );
+      }
+
+      _typeList[0].isSelect = !_typeList.skip(1).any((t) => t.isSelect);
+    }
+
+    _typeList.refresh();
+  }
+
+  void updateSelectGeneration(int index) {
+    if (index == 0) {
+      for (var i = 0; i < _generationList.length; i++) {
+        _generationList[i].isSelect = (i == 0);
+      }
+    } else {
+      _generationList[index].isSelect = !_generationList[index].isSelect;
+
+      var exceptAll = _generationList.skip(1);
+
+      if (exceptAll.every((t) => t.isSelect)) {
+        for (var i = 0; i < _generationList.length; i++) {
+          _generationList[i].isSelect = (i == 0);
+        }
+      } else if (exceptAll.every((t) => !t.isSelect)) {
+        for (var i = 0; i < _generationList.length; i++) {
+          _generationList[i].isSelect = (i == 0);
+        }
+      } else {
+        _generationList[0].isSelect = false;
+      }
+    }
+
+    _generationList.refresh();
+  }
+
+  void clear() {
+    Get.log("clear");
+    _isAll.value = true;
+    _typeList.value = getPokemonTypes();
+    _generationList.value = getPokemonGeneration();
+  }
+
+  void onSearch(String value) {
+    final types = typeList
+        .where((type) => type.isSelect)
+        .map((type) => type.koreanName)
+        .join(',');
+    final generations = generationList
+        .where((generation) => generation.isSelect)
+        .map((generation) => generation.koreanName)
+        .join(',');
+
+    Get.back(
+      result: {
+        'searchValue': value,
+        'isAll': _isAll.value,
+        'types': types,
+        'generations': generations,
+      },
+    );
+  }
 }
