@@ -253,7 +253,10 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                           SizedBox(height: 15),
 
                           buildPokemonWeakInfo(
-                            PokemonDetailController.instance.info.effectGrouping,
+                            PokemonDetailController
+                                .instance
+                                .info
+                                .effectGrouping,
                           ),
                           SizedBox(height: 30),
                         ],
@@ -267,7 +270,10 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                       width: double.infinity,
                       child: CustomButton(
                         text: '카운터 등록',
-                        onTap: () {},
+                        onTap: () {
+                          PokemonDetailController.instance
+                              .insertPokemonCounter();
+                        },
                         backgroundColor: Color(0xFF8B8B8B),
                         borderColor: ColorStyle.white,
                       ),

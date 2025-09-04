@@ -37,7 +37,9 @@ dependencies:
   flutter_svg:
   get:
   http:
-  cached_network_image:
+  sqflite:
+  path:
+  intl:
 
 dev_dependencies:
   flutter_test:

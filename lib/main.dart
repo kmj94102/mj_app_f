@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mj_app_f/controller/game_controller.dart';
+import 'package:mj_app_f/controller/pokemon_counter_history_controller.dart';
 import 'package:mj_app_f/controller/pokemon_dex_controller.dart';
 import 'package:mj_app_f/controller/pokemon_search_controller.dart';
 import 'package:mj_app_f/custom/custom_bottom_navigation.dart';
@@ -10,6 +11,7 @@ import 'package:mj_app_f/views/game/game.dart';
 import 'package:mj_app_f/views/home/home.dart';
 
 import 'controller/home_controller.dart';
+import 'controller/pokemon_counter_controller.dart';
 import 'controller/pokemon_detail_controller.dart';
 
 void main() async {
@@ -18,6 +20,8 @@ void main() async {
   Get.lazyPut(() => PokemonDexController());
   Get.lazyPut(() => PokemonSearchController());
   Get.lazyPut(() => PokemonDetailController());
+  Get.lazyPut(() => PokemonCounterController());
+  Get.lazyPut(() => PokemonCounterHistoryController());
 
   runApp(
     GetMaterialApp(

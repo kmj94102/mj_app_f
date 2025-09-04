@@ -309,6 +309,8 @@ class PokemonDetailInfo {
 
   String get shinyImage => pokemonInfo?.shinyImage ?? '';
 
+  String get spotlight => pokemonInfo?.spotlight ?? '';
+
   String get description => pokemonInfo?.description ?? '';
 
   String get classification => pokemonInfo?.classification ?? '';

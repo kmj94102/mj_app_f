@@ -2,7 +2,9 @@ import 'dart:convert';
 
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:mj_app_f/database/pokemon_table.dart';
 
+import '../database/db_helper.dart';
 import '../model/pokemon.dart';
 
 class PokemonDetailController extends GetxController {
@@ -34,5 +36,26 @@ class PokemonDetailController extends GetxController {
 
   Future<void> toggleShiny() async {
     _isShiny.value = !_isShiny.value;
+  }
+
+  Future<void> insertPokemonCounter() async {
+    final pokemonCounter = PokemonCounter(
+        name: _info.value.name,
+        image: _info.value.image,
+        shinyImage: _info.value.shinyImage,
+        spotlight: _info.value.spotlight,
+        count: 0,
+        isCatch: false,
+        timestamp: DateTime.now().millisecondsSinceEpoch
+    );
+
+    final db = DBHelper.instance;
+    await db.insertPokemon(pokemonCounter);
+    Get.showSnackbar(
+      GetSnackBar(
+        message: '${_info.value.name} 등록 완료',
+        duration: const Duration(seconds: 2),
+      )
+    );
   }
 }
