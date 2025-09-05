@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:mj_app_f/custom/base_container.dart';
 import 'package:mj_app_f/custom/custom_gnb.dart';
 import 'package:mj_app_f/model/pokemon.dart';
 import 'package:mj_app_f/style/color.dart';
@@ -21,102 +22,88 @@ class _PokemonDexScreenState extends State<PokemonDexScreen> {
   @override
   Widget build(BuildContext context) {
     return Obx(
-      () => Scaffold(
-        body: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Color(0xFF5DBEE1), Color(0xFF226496)],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-            ),
+      () => HeaderBodyContainer(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Color(0xFF5DBEE1), Color(0xFF226496)],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
           ),
-          child: SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: Column(
-                children: [
-                  CustomGnb(
-                    title: '전국 도감',
-                    startWidget: GestureDetector(
-                      onTap: () {
-                        Get.back();
-                      },
-                      child: SvgPicture.asset(
-                        '${Constants.imageAddress}/ic_back.svg',
-                      ),
-                    ),
-                    endWidget: GestureDetector(
-                      onTap: () async {
-                        final result = await Get.to(PokemonSearchScreen());
-                        PokemonDexController.instance.setSearchInfo(result);
-                      },
-                      child: SvgPicture.asset(
-                        '${Constants.imageAddress}/ic_search.svg',
-                      ),
-                    ),
-                  ),
-
-                  if (PokemonDexController.instance.searchInfo.isNotEmpty)
-                    Padding(
-                      padding: EdgeInsets.only(bottom: 25),
-                      child: Row(
+        ),
+        header: CustomGnb(
+          title: '전국 도감',
+          startWidget: GestureDetector(
+            onTap: () {
+              Get.back();
+            },
+            child: SvgPicture.asset('${Constants.imageAddress}/ic_back.svg'),
+          ),
+          endWidget: GestureDetector(
+            onTap: () async {
+              final result = await Get.to(PokemonSearchScreen());
+              PokemonDexController.instance.setSearchInfo(result);
+            },
+            child: SvgPicture.asset('${Constants.imageAddress}/ic_search.svg'),
+          ),
+        ),
+        body: Column(
+          children: [
+            if (PokemonDexController.instance.searchInfo.isNotEmpty)
+              Padding(
+                padding: EdgeInsets.only(bottom: 25),
+                child: Row(
+                  children: [
+                    for (var item in PokemonDexController.instance.searchInfo)
+                      Row(
                         children: [
-                          for (var item
-                              in PokemonDexController.instance.searchInfo)
-                            Row(
-                              children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                    color: Color(0xFF0B8DB7),
-                                    borderRadius: BorderRadius.circular(30),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      vertical: 5,
-                                      horizontal: 12,
-                                    ),
-                                    child: Text(
-                                      item,
-                                      style: TextStyle(
-                                        color: ColorStyle.white,
-                                        fontSize: 14,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(width: 5),
-                              ],
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Color(0xFF0B8DB7),
+                              borderRadius: BorderRadius.circular(30),
                             ),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 5,
+                                horizontal: 12,
+                              ),
+                              child: Text(
+                                item,
+                                style: TextStyle(
+                                  color: ColorStyle.white,
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(width: 5),
                         ],
                       ),
-                    ),
-                  Expanded(
-                    child: GridView.builder(
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 4,
-                            crossAxisSpacing: 4,
-                            mainAxisSpacing: 4,
-                            mainAxisExtent: 113,
-                          ),
-                      itemCount: PokemonDexController.instance.list.length,
-                      itemBuilder: (context, index) {
-                        return buildPokemonDexItem(
-                          item: PokemonDexController.instance.list[index],
-                          onTap: (number) {
-                            Get.to(
-                              PokemonDetailScreen(),
-                              arguments: {'number': number},
-                            );
-                          },
-                        );
-                      },
-                    ),
-                  ),
-                ],
+                  ],
+                ),
+              ),
+            Expanded(
+              child: GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 4,
+                  crossAxisSpacing: 4,
+                  mainAxisSpacing: 4,
+                  mainAxisExtent: 113,
+                ),
+                itemCount: PokemonDexController.instance.list.length,
+                itemBuilder: (context, index) {
+                  return buildPokemonDexItem(
+                    item: PokemonDexController.instance.list[index],
+                    onTap: (number) {
+                      Get.to(
+                        PokemonDetailScreen(),
+                        arguments: {'number': number},
+                      );
+                    },
+                  );
+                },
               ),
             ),
-          ),
+          ],
         ),
       ),
     );
