@@ -144,7 +144,7 @@ Widget buildPokemonDexItem({
           children: [
             FadeInImage.assetNetwork(
               placeholder: '${Constants.imageAddress}/img_egg.png',
-              image: item.image ?? '',
+              image: item.image ?? Constants.eggAddress,
               width: 60,
               height: 60,
               fit: BoxFit.cover,

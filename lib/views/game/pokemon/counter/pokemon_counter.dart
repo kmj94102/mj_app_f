@@ -9,6 +9,7 @@ import 'package:mj_app_f/util/constants.dart';
 import 'package:mj_app_f/views/game/pokemon/counter/pokemon_counter_items.dart';
 import 'package:mj_app_f/views/game/pokemon/dex/pokemon_dex.dart';
 
+import '../../../../main.dart';
 import 'history/pokemon_counter_history.dart';
 
 class PokemonCounterScreen extends StatefulWidget {
@@ -18,12 +19,30 @@ class PokemonCounterScreen extends StatefulWidget {
   State<PokemonCounterScreen> createState() => _PokemonCounterScreenState();
 }
 
-class _PokemonCounterScreenState extends State<PokemonCounterScreen> {
+class _PokemonCounterScreenState extends State<PokemonCounterScreen> with RouteAware {
   @override
   void initState() {
     super.initState();
     PokemonCounterController.instance.getPokemonList();
   }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    routeObserver.subscribe(this, ModalRoute.of(context)! as PageRoute);
+  }
+
+  @override
+  void dispose() {
+    routeObserver.unsubscribe(this);
+    super.dispose();
+  }
+
+  @override
+  void didPopNext() {
+    PokemonCounterController.instance.getPokemonList();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -117,7 +136,7 @@ class _PokemonCounterScreenState extends State<PokemonCounterScreen> {
                                   .selectItem
                                   .value
                                   ?.image ??
-                              '',
+                              Constants.eggAddress,
                           width: 157,
                           height: 157,
                         ),
@@ -131,7 +150,7 @@ class _PokemonCounterScreenState extends State<PokemonCounterScreen> {
                                   .selectItem
                                   .value
                                   ?.shinyImage ??
-                              '',
+                              Constants.eggAddress,
                           width: 157,
                           height: 157,
                         ),

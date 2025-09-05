@@ -6,6 +6,7 @@ import 'package:mj_app_f/database/pokemon_table.dart';
 
 import '../database/db_helper.dart';
 import '../model/pokemon.dart';
+import '../util/constants.dart';
 
 class PokemonDetailController extends GetxController {
   static PokemonDetailController instance = Get.find();
@@ -15,6 +16,30 @@ class PokemonDetailController extends GetxController {
 
   final _isShiny = false.obs;
   bool get isShiny => _isShiny.value;
+
+  String getImage() {
+    final result = _isShiny.value ? _info.value.shinyImage : _info.value.image;
+
+    if (result.isEmpty) {
+      return '${Constants.imageAddress}/img_egg.png';
+    } else {
+      return result;
+    }
+  }
+
+  void goToPrev() {
+    final String? number = _info.value.beforeInfo?.number;
+    if (number == null) return;
+
+    fetchData(number);
+  }
+
+  void goToNext() {
+    final String? number = _info.value.nextInfo?.number;
+    if (number == null) return;
+
+    fetchData(number);
+  }
 
   Future<void> fetchData(String number) async {
     final response = await http.get(

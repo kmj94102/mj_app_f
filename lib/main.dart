@@ -9,10 +9,13 @@ import 'package:mj_app_f/style/color.dart';
 import 'package:mj_app_f/views/account_book/account_book.dart';
 import 'package:mj_app_f/views/game/game.dart';
 import 'package:mj_app_f/views/home/home.dart';
+import 'package:mj_app_f/views/test.dart';
 
 import 'controller/home_controller.dart';
 import 'controller/pokemon_counter_controller.dart';
 import 'controller/pokemon_detail_controller.dart';
+
+final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
 
 void main() async {
   Get.lazyPut(() => HomeController());
@@ -22,11 +25,13 @@ void main() async {
   Get.lazyPut(() => PokemonDetailController());
   Get.lazyPut(() => PokemonCounterController());
   Get.lazyPut(() => PokemonCounterHistoryController());
+  Get.lazyPut(() => TestController());
 
   runApp(
     GetMaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: const MyApp()
+      debugShowCheckedModeBanner: false,
+      home: const MyApp(),
+      navigatorObservers: [routeObserver],
     ),
   );
 }
@@ -65,7 +70,7 @@ class _MyHomePageState extends State<MyHomePage> {
     const GameScreen(),
     const Center(child: Text('켈린더', style: TextStyle(color: ColorStyle.white))),
     const AccountBookScreen(),
-    const Center(child: Text('기타', style: TextStyle(color: ColorStyle.white))),
+    const TestScreen(),
   ];
 
   void _onItemTapped(int index) {

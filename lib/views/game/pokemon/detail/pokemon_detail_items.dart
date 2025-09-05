@@ -11,7 +11,9 @@ Widget buildPokemonEvolution(EvolutionInfo evolution, bool isShiny) {
     children: [
       FadeInImage.assetNetwork(
         placeholder: '${Constants.imageAddress}/img_egg.png',
-        image: (isShiny ? evolution.beforeShinyDot : evolution.beforeDot) ?? '',
+        image:
+            (isShiny ? evolution.beforeShinyDot : evolution.beforeDot) ??
+            Constants.eggAddress,
         width: 70,
         height: 70,
       ),
@@ -22,7 +24,7 @@ Widget buildPokemonEvolution(EvolutionInfo evolution, bool isShiny) {
 
       FadeInImage.assetNetwork(
         placeholder: '${Constants.imageAddress}/img_egg.png',
-        image: (isShiny ? evolution.afterShinyDot : evolution.afterDot) ?? '',
+        image: (isShiny ? evolution.afterShinyDot : evolution.afterDot) ?? Constants.eggAddress,
         width: 70,
         height: 70,
       ),
@@ -175,16 +177,15 @@ Widget buildPokemonStatus(String statuses) {
 Widget buildPokemonWeakInfo(PokemonEffectGrouping group) {
   return Column(
     children: [
-      if(group.superEffective.isNotEmpty)
+      if (group.superEffective.isNotEmpty)
         buildPokemonWeakItem('효과가 좋다', group.superEffective),
 
-      if(group.normal.isNotEmpty)
-        buildPokemonWeakItem('보통', group.normal),
+      if (group.normal.isNotEmpty) buildPokemonWeakItem('보통', group.normal),
 
-      if(group.notEffective.isNotEmpty)
+      if (group.notEffective.isNotEmpty)
         buildPokemonWeakItem('효과가 별로다', group.notEffective),
 
-      if(group.noEffect.isNotEmpty)
+      if (group.noEffect.isNotEmpty)
         buildPokemonWeakItem('효과가 없다', group.noEffect),
     ],
   );
@@ -200,11 +201,19 @@ Widget buildPokemonWeakItem(String title, List<PokemonType> items) {
         borderRadius: BorderRadius.circular(8),
       ),
       child: Padding(
-        padding: const EdgeInsets.only(top: 10, bottom: 15, left: 15, right: 15),
+        padding: const EdgeInsets.only(
+          top: 10,
+          bottom: 15,
+          left: 15,
+          right: 15,
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(title, style: TextStyle(color: ColorStyle.white, fontSize: 14)),
+            Text(
+              title,
+              style: TextStyle(color: ColorStyle.white, fontSize: 14),
+            ),
             SizedBox(height: 10),
 
             Wrap(

@@ -77,28 +77,20 @@ class _PokemonDetailScreenState extends State<PokemonDetailScreen> {
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              SvgPicture.asset(
-                                '${Constants.imageAddress}/ic_big_back.svg',
-                              ),
-                              Expanded(
-                                child: FadeInImage.assetNetwork(
-                                  placeholder:
-                                      '${Constants.imageAddress}/img_egg.png',
-                                  image:
-                                      PokemonDetailController.instance.isShiny
-                                          ? PokemonDetailController
-                                              .instance
-                                              .info
-                                              .shinyImage
-                                          : PokemonDetailController
-                                              .instance
-                                              .info
-                                              .image,
-                                  height: 167,
+                              GestureDetector(
+                                onTap: () { PokemonDetailController.instance.goToPrev(); },
+                                child: SvgPicture.asset(
+                                  '${Constants.imageAddress}/ic_big_back.svg',
                                 ),
                               ),
-                              SvgPicture.asset(
-                                '${Constants.imageAddress}/ic_big_next.svg',
+                              Expanded(
+                                child: Image.network(PokemonDetailController.instance.getImage(), height: 167,),
+                              ),
+                              GestureDetector(
+                                onTap: () { PokemonDetailController.instance.goToNext(); },
+                                child: SvgPicture.asset(
+                                  '${Constants.imageAddress}/ic_big_next.svg',
+                                ),
                               ),
                             ],
                           ),
