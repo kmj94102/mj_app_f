@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:mj_app_f/custom/select_chip.dart';
 import 'package:mj_app_f/style/color.dart';
 
+import '../../../database/persona_table.dart';
+import '../../../model/persona.dart';
+
 class Persona3ScheduleItem extends StatelessWidget {
-  final List<TempPersonaSchedule> list;
+  final List<PersonaSchedule> list;
 
   const Persona3ScheduleItem({super.key, required this.list});
 
@@ -28,26 +31,25 @@ class Persona3ScheduleItem extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 8),
                 child: Text(
-                  '1일 수요일',
+                  '${list.first.day}일 ${list.first.dayOfWeek}',
                   style: TextStyle(color: ColorStyle.white, fontSize: 12),
                 ),
               ),
             ),
             SizedBox(height: 12),
 
-            // for (int i = 0; i < list.length; i++)
             for (var item in list)
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    item.label,
+                    item.title ?? '',
                     style: TextStyle(color: ColorStyle.gray, fontSize: 14),
                   ),
                   SizedBox(height: 6),
 
                   Text(
-                    item.title,
+                    item.contents ?? '',
                     style: TextStyle(
                       color: ColorStyle.white,
                       fontSize: 14,
@@ -85,15 +87,9 @@ class Persona3ScheduleItem extends StatelessWidget {
   }
 }
 
-class TempPersonaSchedule {
-  final String title;
-  final String label;
-
-  TempPersonaSchedule({required this.title, required this.label});
-}
-
 class Persona3CommunityItem extends StatelessWidget {
-  const Persona3CommunityItem({super.key});
+  final PersonaCommunity item;
+  const Persona3CommunityItem({super.key, required this.item});
 
   @override
   Widget build(BuildContext context) {
@@ -111,7 +107,7 @@ class Persona3CommunityItem extends StatelessWidget {
               children: [
                 Expanded(
                   child: Text(
-                    "마법사",
+                    item.arcana,
                     style: TextStyle(
                       color: ColorStyle.white,
                       fontSize: 30,
@@ -120,7 +116,7 @@ class Persona3CommunityItem extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  '1 RANK',
+                  '${item.rank} RANK',
                   style: TextStyle(
                     color: ColorStyle.darkBlue,
                     fontSize: 30,
@@ -205,7 +201,8 @@ class Persona3CommunityItem extends StatelessWidget {
 }
 
 class Persona3QuestItem extends StatelessWidget {
-  const Persona3QuestItem({super.key});
+  final PersonaQuest item;
+  const Persona3QuestItem({super.key, required this.item});
 
   @override
   Widget build(BuildContext context) {
@@ -223,7 +220,7 @@ class Persona3QuestItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'No.29 멋을 부리고 싶어',
+                  item.title,
                   style: TextStyle(
                     color: ColorStyle.white,
                     fontSize: 20,
@@ -231,7 +228,7 @@ class Persona3QuestItem extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  '7월 5일 까지',
+                  item.deadline,
                   style: TextStyle(
                     color: Color(0xFF767676),
                     fontSize: 14,
@@ -240,20 +237,25 @@ class Persona3QuestItem extends StatelessWidget {
                 ),
                 SizedBox(height: 12),
 
-                Text(
-                  'No.5 의뢰 완료 후 해금',
-                  style: TextStyle(color: ColorStyle.darkBlue, fontSize: 16),
-                ),
-                SizedBox(height: 16),
+                if(item.condition.isNotEmpty)
+                  Column(
+                    children: [
+                      Text(
+                        item.condition,
+                        style: TextStyle(color: ColorStyle.darkBlue, fontSize: 16),
+                      ),
+                      SizedBox(height: 16),
+                    ],
+                  ),
 
                 Text(
-                  '멋 낼 만한 아이템을 가져온다\n\n클럽 에스카 페이드의 고급 상점 점원에게 10,000엔에 구매 (블랙 쿼츠가 있을 시 1만엔)',
+                  item.contents,
                   style: TextStyle(color: Color(0xFFD9D9D9), fontSize: 16),
                 ),
                 SizedBox(height: 20),
 
                 Text(
-                  '파워 인센스1 x 5',
+                  item.reward,
                   style: TextStyle(
                     color: ColorStyle.white,
                     fontSize: 18,

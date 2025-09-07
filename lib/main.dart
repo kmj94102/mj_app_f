@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mj_app_f/controller/game_controller.dart';
+import 'package:mj_app_f/controller/perona3_schedule_controller.dart';
 import 'package:mj_app_f/controller/pokemon_counter_history_controller.dart';
 import 'package:mj_app_f/controller/pokemon_dex_controller.dart';
 import 'package:mj_app_f/controller/pokemon_search_controller.dart';
@@ -12,6 +13,8 @@ import 'package:mj_app_f/views/home/home.dart';
 import 'package:mj_app_f/views/test.dart';
 
 import 'controller/home_controller.dart';
+import 'controller/persona3_community_controller.dart';
+import 'controller/persona3_quest_controller.dart';
 import 'controller/pokemon_counter_controller.dart';
 import 'controller/pokemon_detail_controller.dart';
 
@@ -25,6 +28,9 @@ void main() async {
   Get.lazyPut(() => PokemonDetailController());
   Get.lazyPut(() => PokemonCounterController());
   Get.lazyPut(() => PokemonCounterHistoryController());
+  Get.lazyPut(() => Persona3ScheduleController());
+  Get.lazyPut(() => Persona3QuestController());
+  Get.lazyPut(() => Persona3CommunityController());
   Get.lazyPut(() => TestController());
 
   runApp(
