@@ -14,7 +14,7 @@ class Persona3ScheduleController extends GetxController {
 
   Future<void> fetchData() async {
     final response = await http.post(
-      Uri.parse('${Constants.baseUrl}/persona/3/select/schedule'),
+      Uri.parse('${Constants.baseUrl}/persona/3/select/schedule2'),
       headers: {"Content-Type": "application/json"},
       body: jsonEncode({"skip": 0, "limit": 100}),
     );
@@ -27,13 +27,29 @@ class Persona3ScheduleController extends GetxController {
       _schedule.clear();
 
       for (var item in dataList) {
-        final date =
-            '${item.month.toString().padLeft(2, '0')}월 ${item.day.toString().padLeft(2, '0')}일';
+        final date = item.getMonth();
         _schedule.putIfAbsent(date, () => []).add(item);
       }
       _schedule.refresh();
     } else {
       Get.log('${response.statusCode} : ${response.body}');
+    }
+  }
+
+  Future<void> updateSchedule(String key, int index, List<int> idxList) async {
+    if(_schedule.containsKey(key)) {
+      final response = await http.post(
+        Uri.parse('${Constants.baseUrl}/persona/3/update/schedule'),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode({"idxList": idxList}),
+      );
+
+      if (response.statusCode == 200) {
+        _schedule[key]?.removeAt(index);
+        _schedule.refresh();
+      } else {
+        Get.log('${response.statusCode} : ${response.body}');
+      }
     }
   }
 }

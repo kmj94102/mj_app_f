@@ -69,18 +69,33 @@ class _Persona3CommunityScreenState extends State<Persona3CommunityScreen>
               child: SingleChildScrollView(
                 child: Column(
                   children: List.generate(
-                    Persona3CommunityController.instance.communityList.length,
-                    (index) => Column(
-                      children: [
-                        Persona3CommunityItem(
-                          item:
-                              Persona3CommunityController
-                                  .instance
-                                  .communityList[index],
-                        ),
-                        SizedBox(height: 12),
-                      ],
-                    ),
+                    Persona3CommunityController.instance.communityMap.length,
+                    (index) {
+                      final entry = Persona3CommunityController
+                          .instance
+                          .communityMap
+                          .entries
+                          .elementAt(index);
+                      final items = entry.value;
+
+                      return Column(
+                        children: [
+                          Persona3CommunityItem(
+                            items: items,
+                            rank: Persona3CommunityController.instance.getRank(
+                              items.first.arcana,
+                            ),
+                            updateRank: (rank) {
+                              Persona3CommunityController.instance.updateRank(
+                                items.first.arcana,
+                                rank,
+                              );
+                            },
+                          ),
+                          SizedBox(height: 12),
+                        ],
+                      );
+                    },
                   ),
                 ),
               ),

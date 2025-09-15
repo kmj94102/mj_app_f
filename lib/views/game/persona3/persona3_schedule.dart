@@ -111,7 +111,13 @@ class _Persona3ScheduleScreenState extends State<Persona3ScheduleScreen>
                             context,
                             index,
                           ) {
-                            return Persona3ScheduleItem(list: items);
+                            return Persona3ScheduleItem(
+                              schedule: items[index],
+                              onTap: (indexList) {
+                                Persona3ScheduleController.instance
+                                    .updateSchedule(date, index, indexList);
+                              },
+                            );
                           }, childCount: items.length),
                         ),
                       );

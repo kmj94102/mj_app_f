@@ -41,6 +41,7 @@ dependencies:
   path:
   intl:
   flutter_sticky_header:
+  shared_preferences:
 
 dev_dependencies:
   flutter_test:
