@@ -48,16 +48,18 @@ class PokemonDexController extends GetxController {
       final data = PokemonInfoList.fromJson(
         jsonDecode(utf8.decode(response.bodyBytes)),
       );
-      _list.value = data.list!;
+      _list.addAll(data.list!);
     } else {
       Get.log(response.body);
     }
   }
 
-  void setSearchInfo(dynamic item) {
-    Get.log('${item['searchValue']} / ${item['isAll'] == true}');
-    Get.log('${item['types']} / ${item['generations']}');
+  void fetchData() {
+    _searchInfo.value.skip += 100;
+    _fetchData();
+  }
 
+  void setSearchInfo(dynamic item) {
     String types = item['types'] ?? '';
     String generations = item['generations'] ?? '';
     _searchInfo.value = PokemonSearchInfo(
@@ -69,6 +71,7 @@ class PokemonDexController extends GetxController {
       isCatch: item['isAll'] == true,
     );
 
+    _list.value = [];
     _fetchData();
   }
 }

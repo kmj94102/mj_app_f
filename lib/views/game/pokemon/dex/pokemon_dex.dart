@@ -19,6 +19,19 @@ class PokemonDexScreen extends StatefulWidget {
 }
 
 class _PokemonDexScreenState extends State<PokemonDexScreen> {
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener((){
+      if (_scrollController.position.pixels >=
+          _scrollController.position.maxScrollExtent - 200) {
+        PokemonDexController.instance.fetchData();
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Obx(
@@ -89,6 +102,7 @@ class _PokemonDexScreenState extends State<PokemonDexScreen> {
                   mainAxisSpacing: 4,
                   mainAxisExtent: 113,
                 ),
+                controller: _scrollController,
                 itemCount: PokemonDexController.instance.list.length,
                 itemBuilder: (context, index) {
                   return buildPokemonDexItem(
@@ -120,7 +134,10 @@ Widget buildPokemonDexItem({
     },
     child: Container(
       decoration: BoxDecoration(
-        color: Colors.white.withAlpha(30),
+        color:
+            item.isCatch == true
+                ? Colors.white.withAlpha(30)
+                : ColorStyle.gray.withAlpha(30),
         borderRadius: BorderRadius.circular(8),
         border: Border.all(color: Colors.white, width: 1),
       ),
@@ -129,12 +146,18 @@ Widget buildPokemonDexItem({
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            FadeInImage.assetNetwork(
-              placeholder: '${Constants.imageAddress}/img_egg.png',
-              image: item.image ?? Constants.eggAddress,
-              width: 60,
-              height: 60,
-              fit: BoxFit.cover,
+            ColorFiltered(
+              colorFilter: ColorFilter.mode(
+                Colors.black.withAlpha(190),
+                item.isCatch == true ? BlendMode.dst : BlendMode.srcATop,
+              ),
+              child: FadeInImage.assetNetwork(
+                placeholder: '${Constants.imageAddress}/img_egg.png',
+                image: item.image ?? Constants.eggAddress,
+                width: 60,
+                height: 60,
+                fit: BoxFit.cover,
+              ),
             ),
             SizedBox(height: 10),
             Text(
