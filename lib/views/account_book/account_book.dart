@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
+import 'package:mj_app_f/custom/base_container.dart';
 import 'package:mj_app_f/custom/custom_gnb.dart';
 import 'package:mj_app_f/style/color.dart';
 import 'package:mj_app_f/util/constants.dart';
+import 'package:mj_app_f/views/account_book/account_book_items.dart';
+import 'package:mj_app_f/views/account_book/insert/account_book_insert.dart';
 
 class AccountBookScreen extends StatefulWidget {
   const AccountBookScreen({super.key});
@@ -14,12 +18,25 @@ class AccountBookScreen extends StatefulWidget {
 class _AccountBookScreenState extends State<AccountBookScreen> {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24),
-      child: Column(
+    return HeaderBodyContainer(
+      header: CustomGnb(
+          title: "가계부",
+        startWidget: GestureDetector(
+          onTap: () {
+            Get.back();
+          },
+          child: SvgPicture.asset('${Constants.imageAddress}/ic_back.svg')
+        ),
+        endWidget: GestureDetector(
+          onTap: (){
+            Get.to(AccountBookInsertScreen());
+          },
+          child: SvgPicture.asset('${Constants.imageAddress}/ic_plus.svg')
+        ),
+      ),
+      body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CustomGnb(title: "가계부"),
           Container(
             decoration: BoxDecoration(
               color: ColorStyle.lightBlack,
@@ -114,74 +131,9 @@ class _AccountBookScreenState extends State<AccountBookScreen> {
             ),
           ),
 
-          Row(
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              CircleAvatar(
-                radius: 23,
-                backgroundColor: ColorStyle.darkBlue.withAlpha(30),
-                child: SvgPicture.asset(
-                  '${Constants.imageAddress}/ic_home.svg',
-                  width: 32,
-                  height: 32,
-                ),
-              ),
-              SizedBox(width: 10),
-
-              Column(
-                children: [
-                  Text(
-                    'MJ앱 api 만들기',
-                    style: TextStyle(color: ColorStyle.white, fontSize: 14),
-                  ),
-                  SizedBox(height: 4),
-                  Text(
-                    '1,000,000원',
-                    style: TextStyle(
-                      color: ColorStyle.darkBlue,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
+          AccountBookItem(isIncome: true),
           SizedBox(height: 16),
-
-          Row(
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              CircleAvatar(
-                radius: 23,
-                backgroundColor: ColorStyle.red.withAlpha(30),
-                child: SvgPicture.asset(
-                  '${Constants.imageAddress}/ic_home.svg',
-                  width: 32,
-                  height: 32,
-                ),
-              ),
-              SizedBox(width: 10),
-
-              Column(
-                children: [
-                  Text(
-                    'MJ앱 api 만들기',
-                    style: TextStyle(color: ColorStyle.white, fontSize: 14),
-                  ),
-                  SizedBox(height: 4),
-                  Text(
-                    '1,000,000원',
-                    style: TextStyle(
-                      color: ColorStyle.red,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
+          AccountBookItem(isIncome: false),
         ],
       ),
     );

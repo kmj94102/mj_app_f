@@ -36,7 +36,7 @@ class CustomGnb extends StatelessWidget {
                 title,
                 style: TextStyle(
                   color: ColorStyle.white,
-                  fontSize: 30,
+                  fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
               ),
