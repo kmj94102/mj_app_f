@@ -466,7 +466,7 @@ class InsertSchedule {
   });
 
   String getDateFormat() {
-    return date?.toString().substring(0, 10) ?? '';
+₩    return date?.toString().substring(0, 10).replaceAll('-', '.') ?? '2025.01.01';
   }
 }
 
